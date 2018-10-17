@@ -29,15 +29,15 @@ ARG SRC_MD2HTMLPDF=https://github.com/ValeryBruniaux/md2htmlpdf/archive/1.01.tar
 # (lien suivant provenant de <https://wkhtmltopdf.org/downloads.html>)
 ARG SRC_WKHTMLTOPDF=https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.stretch_amd64.deb
 
-RUN apt-get update && apt-get -y install tar gzip pandoc openssl fontconfig libssl-dev wget vim
+RUN apt-get update && apt-get -y install tar gzip pandoc openssl fontconfig libssl-dev curl vim
 
 RUN mkdir -p /MarkDown_to_PDF
 RUN mkdir -p /MarkDown_to_PDF/workdir
 RUN mkdir -p /MarkDown_to_PDF/sources
 RUN mkdir -p /Markdown_to_PDF/sources/MD2HTMLPDF
-RUN wget -P /MarkDown_to_PDF/sources/MD2HTMLPDF/ -O src_md2htmlpdf.tar.gz $SRC_MD2HTMLPDF
+RUN wget -o /MarkDown_to_PDF/sources/MD2HTMLPDF/src_md2htmlpdf.tar.gz $SRC_MD2HTMLPDF
 RUN mkdir -p /MarkDown_to_PDF/sources/WKHTMLTOPDF
-RUN wget -P /MarkDown_to_PDF/sources/WKHTMLTOPDF/ -O src_wkhtmltopdf.deb $SRC_WKHTMLTOPDF
+RUN wget -o /MarkDown_to_PDF/sources/WKHTMLTOPDF/src_wkhtmltopdf.deb $SRC_WKHTMLTOPDF
 
 RUN tar -xvzf /MarkDown_to_PDF/sources/MD2HTMLPDF/src_md2htmlpdf.tar.gz --strip-components=1 -C /MarkDown_to_PDF/sources/MD2HTMLPDF/
 RUN sh /MarkDown_to_PDF/sources/MD2HTMLPDF/install.sh
