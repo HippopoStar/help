@@ -39,7 +39,7 @@ RUN wget -P /MarkDown_to_PDF/sources/MD2HTMLPDF/ -O src_md2htmlpdf.tar.gz $SRC_M
 RUN mkdir -p /MarkDown_to_PDF/sources/WKHTMLTOPDF
 RUN wget -P /MarkDown_to_PDF/sources/WKHTMLTOPDF/ -O src_wkhtmltopdf.deb $SRC_WKHTMLTOPDF
 
-RUN tar -xvzf src_md2htmlpdf.tar.gz --strip-components=1 -C /MarkDown_to_PDF/sources/MD2HTMLPDF/
+RUN tar -xvzf /MarkDown_to_PDF/sources/MD2HTMLPDF/src_md2htmlpdf.tar.gz --strip-components=1 -C /MarkDown_to_PDF/sources/MD2HTMLPDF/
 RUN sh /MarkDown_to_PDF/sources/MD2HTMLPDF/install.sh
 RUN dpkg -i /MarkDown_to_PDF/sources/WKHTMLTOPDF/src_wkhtmltopdf.deb
 
@@ -60,3 +60,5 @@ else
 	docker run --name markdown_to_pdf_container --volume $HOME/Desktop/:/MarkDown_to_PDF/workdir/ markdown_to_pdf_image md2htmlpdf "\"${FILENAME}.md\""
 fi
 ```
+- rendre le script precedent executable
+	`chmod u+x <votre_script>`
