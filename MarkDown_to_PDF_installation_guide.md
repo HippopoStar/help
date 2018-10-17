@@ -7,8 +7,8 @@
 	https://www.virtualbox.org/wiki/Downloads
 
 ### Si votre systeme d'exploitation est installe sur un SSD et que vous possedez par ailleurs un HDD, il est conseille de deplacer le repertoire de travail de Docker sur votre HDD. Pour cela, effectuez les commandes suivantes :
-	`mv /Users/<votre_nom_d_utilisateur>/.docker <emplacement_de_destination>`  
-	`ln -s <emplacement_de_destination>/.docker /Users/<votre_nom_d_utilisateur>/`
+	`mv /Users/<votre_nom_d_utilisateur>/.docker <emplacement_de_destination>
+	ln -s <emplacement_de_destination>/.docker /Users/<votre_nom_d_utilisateur>/`
 
 ## Puis, dans un terminal :
 - creer une machine virtuelle utilisant le driver VirtualBox
@@ -40,6 +40,8 @@ RUM wget -O /MarkDown_to_PDF/sources/WKHTMLTOPDF/src_wkhtmltopdf.deb SRC_WKHTMLT
 RUN tar -xvzf -C /MarkDown_to_PDF/sources/MD2HTMLPDF/ --strip-components=1 src_md2htmlpdf.tar.gz
 RUN sh /MarkDown_to_PDF/sources/MD2HTMLPDF/install.sh
 RUN dpkg -i /MarkDown_to_PDF/sources/WKHTMLTOPDF/src_wkhtmltopdf.deb
+
+WORKDIR /MarkDown_to_PDF/workdir/
 ```
 - generer une image Docker a partir du Dockerfile precedent
 	`docker build --tag markdown_to_pdf_image ./`
