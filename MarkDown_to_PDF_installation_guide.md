@@ -1,13 +1,13 @@
 ## Pre-requis :
 - installer le gestionnaire de paquets Brew
 	https://brew.sh/
-- installer Docker ainsi que Docker-Machine a l'aider de Brew
+- installer Docker ainsi que Docker-Machine a l'aide de Brew  
 	Dans un terminal : `brew update && brew install docker docker-machine`
 - installer VirtualBox
 	https://www.virtualbox.org/wiki/Downloads
 
-### Si votre systeme d'exploitation est installer sur un SSD et que vous possedez par ailleurs un HDD, il est conseille de deplacer le repertoire de travail de Docker sur votre HDD. Pour cela, effectuez les commandes suivantes :
-	`mv /Users/<votre_nom_d_utilisateur>/.docker <emplacement_de_destination>`
+### Si votre systeme d'exploitation est installe sur un SSD et que vous possedez par ailleurs un HDD, il est conseille de deplacer le repertoire de travail de Docker sur votre HDD. Pour cela, effectuez les commandes suivantes :
+	`mv /Users/<votre_nom_d_utilisateur>/.docker <emplacement_de_destination>`  
 	`ln -s <emplacement_de_destination>/.docker /Users/<votre_nom_d_utilisateur>/`
 
 ## Puis, dans un terminal :
