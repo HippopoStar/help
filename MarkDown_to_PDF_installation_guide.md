@@ -48,8 +48,6 @@
 >RUN dpkg -i src_wkhtmltopdf.deb
 >
 >WORKDIR /MarkDown_to_PDF/workdir/
->
->ENTRYPOINT [ "/bin/bash" ]
 >```
 - generer une image Docker a partir du Dockerfile precedent  
 	`docker build --tag markdown_to_pdf_image ./`
@@ -58,11 +56,20 @@
 >#!/bin/sh
 >echo 'Donner le nom (sans l extension .md, en le placant entre guillemets s il comporte des espaces) du fichier a convertir en PDF :'
 >read FILENAME
->if test ! -e "$HOME/Desktop/${FILENAME}.md" ; then
+>if test ! -f "$HOME/Desktop/${FILENAME}.md" ; then
 >	echo 'Le fichier specifie n existe pas sur votre bureau !'
 >else
 >	eval "$(docker-machine env my-virtual-machine)"
->	docker run --name markdown_to_pdf_container --volume $HOME/Desktop/:/MarkDown_to_PDF/workdir/ --rm markdown_to_pdf_image md2htmlpdf "${FILENAME}"
+>	if test ! -d $HOME/Desktop/MarkDown_to_PDF_settings ; then
+>		mdkir -p $HOME/Desktop/MarkDown_to_PDF_settings
+>	fi
+>	if test ! -f $HOME/Desktop/MarkDown_to_PDF_settings/lesson.template ; then
+>		docker run --volume $HOME/Desktop/:/MarkDown_to_PDF/workdir/ --rm markdown_to_pdf_image mv /root/.config/md2htmlpdf/templates/lesson.template /MarkDown_to_PDF/workdir/MarkDown_to_PDF_settings/
+>	fi
+>	if test ! -f $HOME/Desktop/MarkDown_to_PDF_settings/lesson.css ; then
+>		docker run --volume $HOME/Desktop/:/MarkDown_to_PDF/workdir/ --rm markdown_to_pdf_image mv /root/.config/md2htmlpdf/css/lesson.css /MarkDown_to_PDF/workdir/MarkDown_to_PDF_settings/
+>	fi
+>	docker run --volume $HOME/Desktop/:/MarkDown_to_PDF/workdir/ --rm markdown_to_pdf_image md2htmlpdf /MarkDown_to_PDF/workdir/MarkDown_to_PDF_settings/lesson.template /MarkDown_to_PDF/workdir/MarkDown_to_PDF_settings/lesson.css "${FILENAME}"
 >fi
 >```
 - rendre le script precedent executable  
