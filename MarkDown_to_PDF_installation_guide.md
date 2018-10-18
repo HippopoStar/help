@@ -49,12 +49,10 @@
 >
 >WORKDIR /MarkDown_to_PDF/workdir/
 >
->ENTRYPOINT [ " /bin/bash " ]
+>ENTRYPOINT [ "/bin/bash" ]
 >```
 - generer une image Docker a partir du Dockerfile precedent  
 	`docker build --tag markdown_to_pdf_image ./`
-- creer un container a partir de l'image nouvellement creee  
-	`docker run -d --name markdown_to_pdf_container --volume $HOME/Desktop/:/MarkDown_to_PDF/workdir/ markdown_to_pdf_image`
 - creer un script qui sera a lancer dans un terminal pour convertir un fichier MarkDown en fichier PDF, ressemblant a :
 >```
 >#!/bin/sh
@@ -64,8 +62,8 @@
 >	echo 'Le fichier specifie n existe pas sur votre bureau !'
 >else
 >	eval "$(docker-machine env my-virtual-machine)"
->	docker restart markdown_to_pdf_container
 >	docker exec markdown_to_pdf_container md2htmlpdf "${FILENAME}.md"
+>	docker run --name markdown_to_pdf_container --volume $HOME/Desktop/:/MarkDown_to_PDF/workdir/ --rm markdown_to_pdf_image md2htmlpdf "${FILENAME}"
 >fi
 >```
 - rendre le script precedent executable  
