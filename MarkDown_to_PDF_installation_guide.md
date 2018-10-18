@@ -42,10 +42,10 @@
 >RUN tar -xvzf src_md2htmlpdf.tar.gz --strip-components=1
 >RUN sh install.sh
 >
-># RUN mkdir -p /MarkDown_to_PDF/sources/WKHTMLTOPDF
-># WORKDIR /MarkDown_to_PDF/sources/WKHTMLTOPDF/
-># RUN wget -O src_wkhtmltopdf.deb $SRC_WKHTMLTOPDF
-># RUN dpkg -i src_wkhtmltopdf.deb
+>RUN mkdir -p /MarkDown_to_PDF/sources/WKHTMLTOPDF
+>WORKDIR /MarkDown_to_PDF/sources/WKHTMLTOPDF/
+>RUN wget -O src_wkhtmltopdf.deb $SRC_WKHTMLTOPDF
+>RUN dpkg -i src_wkhtmltopdf.deb
 >
 >WORKDIR /MarkDown_to_PDF/workdir/
 >
@@ -56,13 +56,12 @@
 - creer un script qui sera a lancer dans un terminal pour convertir un fichier MarkDown en fichier PDF, ressemblant a :
 >```
 >#!/bin/sh
->echo 'Donner le nom (sans l extension .md) du fichier a convertir en PDF :'
+>echo 'Donner le nom (sans l extension .md, en le placant entre guillemets s il comporte des espaces) du fichier a convertir en PDF :'
 >read FILENAME
 >if test ! -e "$HOME/Desktop/${FILENAME}.md" ; then
 >	echo 'Le fichier specifie n existe pas sur votre bureau !'
 >else
 >	eval "$(docker-machine env my-virtual-machine)"
->	docker exec markdown_to_pdf_container md2htmlpdf "${FILENAME}.md"
 >	docker run --name markdown_to_pdf_container --volume $HOME/Desktop/:/MarkDown_to_PDF/workdir/ --rm markdown_to_pdf_image md2htmlpdf "${FILENAME}"
 >fi
 >```
