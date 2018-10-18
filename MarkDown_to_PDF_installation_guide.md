@@ -1,9 +1,9 @@
 ## Pre-requis :
-- installer le gestionnaire de paquets Brew
+- installer le gestionnaire de paquets Brew  
 	https://brew.sh/
 - installer Docker ainsi que Docker-Machine a l'aide de Brew  
 	Dans un terminal : `brew update && brew install docker docker-machine`
-- installer VirtualBox
+- installer VirtualBox  
 	https://www.virtualbox.org/wiki/Downloads
 
 ### Si votre repertoire HOME est situe sur un SSD et que vous possedez par ailleurs un HDD, il est conseille de deplacer le repertoire de travail de Docker sur votre HDD. Pour cela, effectuez les commandes suivantes :
@@ -13,11 +13,11 @@
 ```
 
 ## Puis, dans un terminal :
-- creer une machine virtuelle utilisant le driver VirtualBox
+- creer une machine virtuelle utilisant le driver VirtualBox  
 	`docker-machine create --driver virtualbox my-virtual-machine`
-- assigner les variables d'environnement necessaires a l'utilisation de Docker dans le terminal courant
+- assigner les variables d'environnement necessaires a l'utilisation de Docker dans le terminal courant  
 	`eval "$(docker-machine env my-virtual-machine)"`
-- telecharger une image debian depuis DockerHub
+- telecharger une image debian depuis DockerHub  
 	`docker pull debian:stretch`
 - creer un Dockerfile ressemblant a :
 ```
@@ -47,21 +47,25 @@ RUN sh install.sh
 # RUN dpkg -i src_wkhtmltopdf.deb
 
 WORKDIR /MarkDown_to_PDF/workdir/
+
+ENTRYPOINT [ " /bin/bash " ]
 ```
-- generer une image Docker a partir du Dockerfile precedent
+- generer une image Docker a partir du Dockerfile precedent  
 	`docker build --tag markdown_to_pdf_image ./`
+- creer un container a partir de l'image nouvellement creee  
+	`docker run --name markdown_to_pdf_container --volume $HOME/Desktop/:/MarkDown_to_PDF/workdir/ markdown_to_pdf_image exit`
 - creer un script qui sera a lancer dans un terminal pour convertir un fichier MarkDown en fichier PDF, ressemblant a :
 ```
 #!/bin/sh
-echo 'Donner le nom (sans l'extension .md) du fichier a convertir en PDF :'
+echo 'Donner le nom (sans l extension .md) du fichier a convertir en PDF :'
 read FILENAME
 if test ! -e "$HOME/Desktop/${FILENAME}.md" ; then
-	echo 'Le fichier specifie n'existe pas sur votre bureau !'
+	echo 'Le fichier specifie n existe pas sur votre bureau !'
 else
 	eval "$(docker-machine env my-virtual-machine)"
-	docker stop markdown_to_pdf_container
-	docker run --name markdown_to_pdf_container --volume $HOME/Desktop/:/MarkDown_to_PDF/workdir/ markdown_to_pdf_image md2htmlpdf "\"${FILENAME}.md\""
+	docker restart markdown_to_pdf_container
+	docker exec markdown_to_pdf_container md2htmlpdf "${FILENAME}.md"
 fi
 ```
-- rendre le script precedent executable
+- rendre le script precedent executable  
 	`chmod u+x <votre_script>`
