@@ -20,7 +20,7 @@
 - telecharger une image debian depuis DockerHub  
 	`docker pull debian:stretch`
 - creer un Dockerfile ressemblant a :
-
+>```
 >FROM debian:stretch
 >
 ># voir GNU Linux Pratique n109
@@ -50,13 +50,13 @@
 >WORKDIR /MarkDown_to_PDF/workdir/
 >
 >ENTRYPOINT [ " /bin/bash " ]
-
+>```
 - generer une image Docker a partir du Dockerfile precedent  
 	`docker build --tag markdown_to_pdf_image ./`
 - creer un container a partir de l'image nouvellement creee  
 	`docker run -d --name markdown_to_pdf_container --volume $HOME/Desktop/:/MarkDown_to_PDF/workdir/ markdown_to_pdf_image`
 - creer un script qui sera a lancer dans un terminal pour convertir un fichier MarkDown en fichier PDF, ressemblant a :
-
+>```
 >#!/bin/sh
 >echo 'Donner le nom (sans l extension .md) du fichier a convertir en PDF :'
 >read FILENAME
@@ -67,6 +67,6 @@
 >	docker restart markdown_to_pdf_container
 >	docker exec markdown_to_pdf_container md2htmlpdf "${FILENAME}.md"
 >fi
-
+>```
 - rendre le script precedent executable  
 	`chmod u+x <votre_script>`
